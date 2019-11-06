@@ -28,9 +28,9 @@ class StudentController {
       return res.status(400).json({ error: 'Student already exists.' });
     }
 
-    const { id, name, email } = await Student.create(req.body);
+    const student = await Student.create(req.body);
 
-    return res.json({ id, name, email });
+    return res.json(student);
   }
 
   async update(req, res) {
@@ -52,9 +52,13 @@ class StudentController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { email } = req.body;
-
     const student = await Student.findOne({ where: { id: req.body.id } });
+
+    if (!student) {
+      return res.status(400).json({ error: 'Student does not exists' });
+    }
+
+    const email = req.body.email != null ? req.body.email : student.email;
 
     if (email !== student.email) {
       const studentExists = await Student.findOne({ where: { email } });
@@ -64,9 +68,9 @@ class StudentController {
       }
     }
 
-    const { id, name } = await student.update(req.body);
+    const studentUpdate = await student.update(req.body);
 
-    return res.json({ id, name, email });
+    return res.json(studentUpdate);
   }
 }
 
