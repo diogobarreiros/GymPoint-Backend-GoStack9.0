@@ -1,7 +1,26 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 import Student from '../models/Student';
 
 class StudentController {
+  async index(req, res) {
+    const { q: studentName } = req.query;
+
+    const response = studentName
+      ? await Student.findAll({
+          where: {
+            name: {
+              [Op.like]: `%${studentName}%`,
+            },
+          },
+        })
+      : await Student.findAll();
+
+    response.sort((a, b) => a.name.localeCompare(b.name));
+
+    res.json(response);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),

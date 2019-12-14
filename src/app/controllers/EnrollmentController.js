@@ -16,7 +16,7 @@ class EnrollmentController {
       order: ['id'],
       limit: pageLimit,
       offset: (page - 1) * pageLimit,
-      attributes: ['id', 'start_date', 'end_date', 'price'],
+      attributes: ['id', 'start_date', 'end_date', 'price', 'active'],
       include: [
         {
           model: Student,
