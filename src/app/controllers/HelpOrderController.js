@@ -7,7 +7,12 @@ import Queue from '../../lib/Queue';
 
 class HelpOrderController {
   async index(req, res) {
+    const { page = 1 } = req.query;
+    const { pageLimit = 20 } = req.query;
+
     const helpOrders = await HelpOrder.findAll({
+      limit: pageLimit,
+      offset: (page - 1) * pageLimit,
       where: { answer: null },
       include: [
         {
@@ -51,7 +56,12 @@ class HelpOrderController {
   }
 
   async show(req, res) {
+    const { page = 1 } = req.query;
+    const { pageLimit = 20 } = req.query;
+
     const helpOrders = await HelpOrder.findAll({
+      limit: pageLimit,
+      offset: (page - 1) * pageLimit,
       where: { student_id: req.params.id },
       attributes: ['question', 'answer', 'answer_at', 'created_at'],
       include: [

@@ -4,17 +4,24 @@ import Student from '../models/Student';
 
 class StudentController {
   async index(req, res) {
+    const { page = 1 } = req.query;
+    const { pageLimit = 20 } = req.query;
     const { q: studentName } = req.query;
 
     const response = studentName
       ? await Student.findAll({
+          limit: pageLimit,
+          offset: (page - 1) * pageLimit,
           where: {
             name: {
               [Op.like]: `%${studentName}%`,
             },
           },
         })
-      : await Student.findAll();
+      : await Student.findAll({
+          limit: pageLimit,
+          offset: (page - 1) * pageLimit,
+        });
 
     response.sort((a, b) => a.name.localeCompare(b.name));
 

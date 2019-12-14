@@ -34,7 +34,12 @@ class CheckinController {
   }
 
   async index(req, res) {
+    const { page = 1 } = req.query;
+    const { pageLimit = 20 } = req.query;
+
     const checkins = await Checkin.find({
+      limit: pageLimit,
+      offset: (page - 1) * pageLimit,
       student_id: req.params.id,
     });
     return res.json(checkins);
