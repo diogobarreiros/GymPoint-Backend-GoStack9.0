@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import { Op } from 'sequelize';
 import Student from '../models/Student';
+import Enrrolment from '../models/Enrollment';
 
 class StudentController {
   async index(req, res) {
@@ -97,6 +98,37 @@ class StudentController {
     const studentUpdate = await student.update(req.body);
 
     return res.json(studentUpdate);
+  }
+
+  async find(req, res) {
+    const { id } = req.params;
+
+    const student = await Student.findByPk(id);
+
+    res.json(student);
+  }
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    const student = await Student.findByPk(id);
+
+    if (!student) {
+      return res.status(400).json({ error: 'Student does not exist' });
+    }
+
+    const studentEnrrolment = await Enrrolment.findOne({
+      where: { student_id: id },
+      attributes: ['id', 'active'],
+    });
+
+    if (studentEnrrolment && studentEnrrolment.active) {
+      return res.status(400).json({ erro: 'Student has a active Enrrolment' });
+    }
+
+    await student.destroy();
+
+    return res.json({ message: 'Student deleted' });
   }
 }
 
