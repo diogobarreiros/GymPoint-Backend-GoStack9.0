@@ -95,9 +95,6 @@ class EnrollmentController {
 
   async update(req, res) {
     const schema = Yup.object().shape({
-      id: Yup.number()
-        .integer()
-        .required(),
       student_id: Yup.number().integer(),
       plan_id: Yup.number().integer(),
       start_date: Yup.date(),
@@ -107,7 +104,7 @@ class EnrollmentController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { id } = req.body;
+    const { id } = req.params.id;
 
     const enrollment = await Enrollment.findOne({ where: { id } });
 
