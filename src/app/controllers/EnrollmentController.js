@@ -104,7 +104,7 @@ class EnrollmentController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { id } = req.params.id;
+    const { id } = req.params;
 
     const enrollment = await Enrollment.findOne({ where: { id } });
 
