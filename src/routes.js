@@ -20,6 +20,8 @@ routes.get('/students/:id/checkins', CheckinController.index);
 routes.post('/students/:id/help-orders', HelpOrderController.store);
 routes.get('/students/:id/help-orders', HelpOrderController.show);
 
+routes.get('/students/:id', StudentController.find);
+
 routes.use(authMiddleware);
 
 routes.get('/students/help-orders', HelpOrderController.index);
@@ -31,7 +33,6 @@ routes.put('/users', UserController.update);
 routes.get('/students', StudentController.index);
 routes.post('/students', StudentController.store);
 routes.put('/students/:id', StudentController.update);
-routes.get('/students/:id', StudentController.find);
 routes.delete('/students/:id', StudentController.delete);
 
 routes.get('/plans', PlanController.index);

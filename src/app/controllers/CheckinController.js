@@ -38,10 +38,12 @@ class CheckinController {
     const { pageLimit = 20 } = req.query;
 
     const checkins = await Checkin.find({
-      limit: pageLimit,
-      offset: (page - 1) * pageLimit,
       student_id: req.params.id,
-    });
+    })
+      .sort({ createdAt: 'desc' })
+      .skip(Number((page - 1) * pageLimit))
+      .limit(Number(pageLimit));
+
     return res.json(checkins);
   }
 }
