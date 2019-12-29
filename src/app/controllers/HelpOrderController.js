@@ -63,7 +63,7 @@ class HelpOrderController {
       limit: pageLimit,
       offset: (page - 1) * pageLimit,
       where: { student_id: req.params.id },
-      attributes: ['question', 'answer', 'answer_at', 'created_at'],
+      attributes: ['id', 'question', 'answer', 'answer_at', 'created_at'],
       include: [
         {
           model: Student,
@@ -71,6 +71,7 @@ class HelpOrderController {
           attributes: ['id', 'name', 'email', 'age', 'height', 'weight'],
         },
       ],
+      order: [['created_at', 'DESC']],
     });
     return res.json(helpOrders);
   }
