@@ -10,7 +10,7 @@ class HelpOrderController {
     const { page = 1 } = req.query;
     const { pageLimit = 20 } = req.query;
 
-    const helpOrders = await HelpOrder.findAll({
+    const helpOrders = await HelpOrder.findAndCountAll({
       limit: pageLimit,
       offset: (page - 1) * pageLimit,
       where: { answer: null },
@@ -22,6 +22,7 @@ class HelpOrderController {
         },
       ],
     });
+
     return res.json(helpOrders);
   }
 
