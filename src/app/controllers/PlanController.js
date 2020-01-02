@@ -6,7 +6,7 @@ class PlanController {
     const { page = 1 } = req.query;
     const { pageLimit = 20 } = req.query;
 
-    const plans = await Plan.findAll({
+    const plans = await Plan.findAndCountAll({
       order: ['id'],
       limit: pageLimit,
       offset: (page - 1) * pageLimit,

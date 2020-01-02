@@ -12,7 +12,7 @@ class EnrollmentController {
     const { page = 1 } = req.query;
     const { pageLimit = 20 } = req.query;
 
-    const enrollments = await Enrollment.findAll({
+    const enrollments = await Enrollment.findAndCountAll({
       order: ['id'],
       limit: pageLimit,
       offset: (page - 1) * pageLimit,

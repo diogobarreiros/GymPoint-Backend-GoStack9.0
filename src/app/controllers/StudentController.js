@@ -10,7 +10,7 @@ class StudentController {
     const { q: studentName } = req.query;
 
     const response = studentName
-      ? await Student.findAll({
+      ? await Student.findAndCountAll({
           limit: pageLimit,
           offset: (page - 1) * pageLimit,
           where: {
@@ -18,13 +18,12 @@ class StudentController {
               [Op.like]: `%${studentName}%`,
             },
           },
+          order: ['name'],
         })
-      : await Student.findAll({
+      : await Student.findAndCountAll({
           limit: pageLimit,
           offset: (page - 1) * pageLimit,
         });
-
-    response.sort((a, b) => a.name.localeCompare(b.name));
 
     res.json(response);
   }
